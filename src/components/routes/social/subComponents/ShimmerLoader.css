@@ -1,0 +1,24 @@
+.shimmer-container{
+	width: 100%;
+}
+.shimmer-loader{
+	background-color: #f2f2f2;
+	border-radius: 8px;
+}
+.shimmer-container .shimmer-image{
+	height: 480px;
+	margin-bottom: 10px;
+}
+.shimmer-container .shimmer-text{
+	height: 15px;
+	margin-top: 10px;
+}
+.shimmer-container .first-text{
+	width: 75%;
+}
+.shimmer-container .second-text{
+	width: 90%;
+}
+.shimmer-container .third-text{
+	width: 50%;
+}

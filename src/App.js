@@ -1,28 +1,43 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Header from './components/Header';
+import RouteContainer from './components/routes/RouteContainer';
+import Footer from './components/Footer';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			currentRoute: '/'
+		};
+	}
+
+	componentDidMount () {
+		if(typeof window != 'undefined') {
+			let app = this;
+			window.onhashchange = (event)=>{
+				const currentRoute = event.newURL.split('#')[1] || '';
+				app.setState({currentRoute});
+			};
+			const currentRoute = window.location.hash.split('#')[1] || '';
+			app.setState({currentRoute});
+		}
+		if (typeof document != 'undefined') {
+			document.getElementsByTagName('body')[0].className = 'simple-login-app';
+		}
+	}
+
+	render() {
+		return (
+			<div className="App">
+				<Header currentRoute={this.state.currentRoute} />
+				<RouteContainer currentRoute={this.state.currentRoute} />
+				<Footer />
+				<div className="app-background" />
+			</div>
+		);
+	}
 }
 
 export default App;
