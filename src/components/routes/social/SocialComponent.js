@@ -10,14 +10,19 @@ export default class SocialComponent extends Component {
 
 		this.state = {
 			loading : true,
-			postArray
+			postArray : [{
+				shimmer: true
+			}]
 		};
 	}
 
 	componentDidMount () {
-		setTimeout(()=>{
+		this.timeoutVar = setTimeout(()=>{
 			this.setState({loading:false});
 		},5000);
+	}
+	componentWillUnmount () {
+		clearTimeout(this.timeoutVar);
 	}
 
 	getCardList () {
