@@ -8,7 +8,7 @@ export const routes = {
 
 export const accessibilities = {
   LOGGED_IN: 'LOGGED_IN',
-  NOT_LOGGED_IN: 'NOT_LOGGED_IN'
+  NOT_LOGGED_IN: 'LOGGED_OUT'
 }
 
 export const apiUrl = 'http://localhost:3000/'
