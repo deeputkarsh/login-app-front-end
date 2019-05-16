@@ -38,7 +38,7 @@ class ProfileComponent extends Component {
       return
     }
     const postData = this.fieldSetRef.getFieldValues()
-    axios.post(`${apiUrl}updateProfile`, postData).then(data => {
+    axios.post(`${apiUrl}/updateProfile`, postData).then(data => {
       const user = data.data
       if (user.id) {
         this.props.loadUser(user)
