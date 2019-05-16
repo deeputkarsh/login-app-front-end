@@ -35,7 +35,7 @@ export class Register extends Component {
       return
     }
     const postData = this.fieldSetRef.getFieldValues()
-    axios.post(`${apiUrl}signup`, postData).then(data => {
+    axios.post(`${apiUrl}/signup`, postData).then(data => {
       data = data.data
       if (data.isSuccess) {
         this.props.loadUser(data.data)

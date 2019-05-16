@@ -15,7 +15,14 @@ export class Signin extends Component {
       labelName: 'Password',
       name: 'password',
       inputType: 'password',
-      inputClass: 'password-input'
+      inputClass: 'password-input',
+      eventHandlers: {
+        onKeyDown: (event) => {
+          if (event.keyCode === 13) {
+            this.onSubmitSignIn()
+          }
+        }
+      }
     }]
     this.onSubmitSignIn = this.onSubmitSignIn.bind(this)
   }
@@ -25,7 +32,7 @@ export class Signin extends Component {
       return
     }
     const postData = this.fieldSetRef.getFieldValues()
-    axios.post(`${apiUrl}login`, postData).then(data => {
+    axios.post(`${apiUrl}/login`, postData).then(data => {
       data = data.data
       if (data.isSuccess) {
         this.props.loadUser(data.data)

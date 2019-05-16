@@ -25,6 +25,7 @@ export class FieldSet extends Component {
       fieldArray = []
     } = this.props
     return fieldArray.map((value, index) => {
+      const eventHandlers = value.eventHandlers || {}
       return (
         <div className='field-container' key={`${value.labelName}-${index}`}>
           <label className='field-label' htmlFor={value.name}>{value.labelName}</label>
@@ -34,6 +35,7 @@ export class FieldSet extends Component {
             type={value.inputType || 'text'}
             name={value.name}
             initialValue={value.initialValue}
+            {...eventHandlers}
           />
         </div>
       )

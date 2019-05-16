@@ -11,14 +11,15 @@ export const accessibilities = {
   NOT_LOGGED_IN: 'LOGGED_OUT'
 }
 
-export const apiUrl = 'http://localhost:3000/'
+export const apiUrl = process.env.REACT_APP_API_URL
 
+export const homeNavItem = {
+  text: 'Home',
+  route: routes.HOME,
+  accessibility: `${accessibilities.LOGGED_IN},${accessibilities.NOT_LOGGED_IN}`
+}
 export const allNavItems = [
   {
-    text: 'Home',
-    route: routes.HOME,
-    accessibility: `${accessibilities.LOGGED_IN},${accessibilities.NOT_LOGGED_IN}`
-  }, {
     text: 'Sign Up',
     route: routes.REGISTER,
     accessibility: accessibilities.NOT_LOGGED_IN

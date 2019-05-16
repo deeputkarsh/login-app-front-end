@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Nav, NavItem, Dropdown, DropdownItem, DropdownToggle, DropdownMenu, NavLink } from 'reactstrap'
-import './Header.css'
-import { routes, allNavItems, accessibilities } from '../constants'
+import '../styles/Header.scss'
+import { routes, allNavItems, accessibilities, homeNavItem } from '../constants'
 
 export class HeaderComponent extends Component {
   constructor (props) {
@@ -66,11 +66,11 @@ export class HeaderComponent extends Component {
         return allNavItems.filter(ele => ele.accessibility.includes(accessibilities.NOT_LOGGED_IN))
       }
     })(this.props.isSignedIn)
-    console.log(navLinks)
     return (
       <div className='site-header'>
         <Nav tabs>
-          {this.getNavItems(navLinks)}
+          <div className='nav-group'>{this.getNavItems([homeNavItem])}</div>
+          <div className='nav-group'>{this.getNavItems(navLinks)}</div>
         </Nav>
       </div>
     )
