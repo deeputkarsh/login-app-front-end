@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import axios from 'axios'
+import { connect } from 'react-redux'
 import { CardDesign, FieldSet, SubmitBtn } from '../common'
-import { apiUrl } from '../../constants'
+import { UserService } from '../../services/user-service'
+import { actions } from '../../reduxHelpers'
 
-export class Register extends Component {
+export class RegisterComponent extends Component {
   constructor (props) {
     super(props)
     this.fieldArray = [{
@@ -35,11 +36,10 @@ export class Register extends Component {
       return
     }
     const postData = this.fieldSetRef.getFieldValues()
-    axios.post(`${apiUrl}/signup`, postData).then(data => {
+    UserService.signup(postData).then(data => {
       data = data.data
       if (data.isSuccess) {
-        this.props.loadUser(data.data)
-        window.location.hash = '/'
+        this.props.loginUser({ mobile: postData.mobile, password: postData.password })
       }
     })
   }
@@ -64,3 +64,6 @@ export class Register extends Component {
     )
   }
 }
+
+const { loginUser } = actions.loginActions
+export const Register = connect(null, { loginUser })(RegisterComponent)

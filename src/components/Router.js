@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { loadUser } from '../reduxHelpers'
 import { Signin, Register, UnderConstruction, NotFoundPage, Profile } from './routes'
 import { routes } from '../constants'
 
@@ -34,17 +33,19 @@ class RouterComponent extends Component {
   }
   render () {
     const {
-      route,
-      loadUser
+      route
     } = this.props
     const { Container, routeClass } = this.getComponent(route)
 
     return (
       <div className={`route-holder ${routeClass}`}>
-        <Container loadUser={loadUser} />
+        <Container />
       </div>
     )
   }
 }
 
-export const Router = connect(state => ({ route: state.route }), { loadUser })(RouterComponent)
+export const Router = connect(state => {
+  const { appState } = state
+  return { route: appState.route }
+})(RouterComponent)

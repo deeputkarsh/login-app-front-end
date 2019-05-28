@@ -11,8 +11,6 @@ export const accessibilities = {
   NOT_LOGGED_IN: 'LOGGED_OUT'
 }
 
-export const apiUrl = process.env.REACT_APP_API_URL
-
 export const homeNavItem = {
   text: 'Home',
   route: routes.HOME,
@@ -34,7 +32,7 @@ export const allNavItems = [
     dropdownOpen: false,
     dropdownItems: [
       {
-        text: 'Utkarsh',
+        text: 'User',
         attr: {
           header: true
         }

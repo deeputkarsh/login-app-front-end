@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import axios from 'axios'
+import { connect } from 'react-redux'
 import { CardDesign, FieldSet, SubmitBtn } from '../common'
-import { apiUrl } from '../../constants'
+import { actions } from '../../reduxHelpers'
 
-export class Signin extends Component {
+export class SigninComponent extends Component {
   constructor (props) {
     super(props)
     this.fieldArray = [{
@@ -32,13 +32,7 @@ export class Signin extends Component {
       return
     }
     const postData = this.fieldSetRef.getFieldValues()
-    axios.post(`${apiUrl}/login`, postData).then(data => {
-      data = data.data
-      if (data.isSuccess) {
-        this.props.loadUser(data.data)
-        window.location.hash = '/'
-      }
-    })
+    this.props.loginUser(postData)
   }
 
   render () {
@@ -61,3 +55,6 @@ export class Signin extends Component {
     )
   }
 }
+
+const { loginUser } = actions.loginActions
+export const Signin = connect(null, { loginUser })(SigninComponent)
