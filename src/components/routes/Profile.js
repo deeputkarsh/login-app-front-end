@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
-import axios from 'axios'
 import { CardDesign, FieldSet, SubmitBtn } from '../common'
 import { connect } from 'react-redux'
-import { apiUrl } from '../../constants'
-
-const mapStateToProps = state => ({
-  user: state.user
-})
+import { UserService } from '../../services/user-service'
+import { actions } from '../../reduxHelpers'
 
 class ProfileComponent extends Component {
   constructor (props) {
@@ -38,11 +34,10 @@ class ProfileComponent extends Component {
       return
     }
     const postData = this.fieldSetRef.getFieldValues()
-    axios.post(`${apiUrl}/updateProfile`, postData).then(data => {
-      const user = data.data
-      if (user.id) {
-        this.props.loadUser(user)
-        window.location.hash = '/'
+    UserService.updateProfile(postData, this.props.token).then(data => {
+      if (data.data.isSuccess) {
+        this.props.loadUser(postData)
+        this.props.changeRoute('')
       }
     })
   }
@@ -68,4 +63,8 @@ class ProfileComponent extends Component {
   }
 }
 
-export const Profile = connect(mapStateToProps)(ProfileComponent)
+const { commonActions: { changeRoute }, loginActions: { loadUser } } = actions
+export const Profile = connect(state => {
+  const { auth } = state
+  return { ...auth }
+}, { changeRoute, loadUser })(ProfileComponent)

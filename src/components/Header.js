@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Nav, NavItem, Dropdown, DropdownItem, DropdownToggle, DropdownMenu, NavLink } from 'reactstrap'
 import '../styles/Header.scss'
 import { routes, allNavItems, accessibilities, homeNavItem } from '../constants'
+import { actions } from '../reduxHelpers'
 
 export class HeaderComponent extends Component {
   constructor (props) {
@@ -26,15 +27,22 @@ export class HeaderComponent extends Component {
       let returnHtm = null
       if (value.type === 'dropdown') {
         returnHtm = (
-          <Dropdown key={`nav-items-${value.text}-${index}`} nav isOpen={value.dropdownOpen} toggle={() => this.toggle(value)}>
+          <Dropdown key={`nav-items-${value.text}-${index}`} inNavbar nav isOpen={value.dropdownOpen} toggle={() => this.toggle(value)}>
             <DropdownToggle nav caret>{value.text}</DropdownToggle>
-            <DropdownMenu>
+            <DropdownMenu right>
               {value.dropdownItems.map((item, index) => {
                 const itemEvents = {}
                 if (item.route) {
                   itemEvents.onClick = () => {
-                    window.location.hash = `#/${item.route}`
+                    if (item.route === 'logout') {
+                      this.props.logOutUser(this.props.token)
+                    } else {
+                      this.props.changeRoute(item.route)
+                    }
                   }
+                }
+                if (index === 0) {
+                  item.text = this.props.userName
                 }
                 return (
                   <DropdownItem key={`nav-drop-${item.text}-${index}`} {...item.attr} {...itemEvents}>{item.text}</DropdownItem>
@@ -65,7 +73,7 @@ export class HeaderComponent extends Component {
       } else {
         return allNavItems.filter(ele => ele.accessibility.includes(accessibilities.NOT_LOGGED_IN))
       }
-    })(this.props.isSignedIn)
+    })(!!this.props.token)
     return (
       <div className='site-header'>
         <Nav tabs>
@@ -76,9 +84,12 @@ export class HeaderComponent extends Component {
     )
   }
 }
+const { loginActions: { logOutUser }, commonActions: { changeRoute } } = actions
 export const Header = connect(state => {
+  const { appState, auth } = state
   return {
-    route: state.route,
-    isSignedIn: state.isSignedIn
+    route: appState.route,
+    token: auth.token,
+    userName: auth.user ? auth.user.name : 'USER'
   }
-})(HeaderComponent)
+}, { changeRoute, logOutUser })(HeaderComponent)

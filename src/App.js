@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { Header, Footer, Router } from './components'
 import { connect } from 'react-redux'
-import { onRouteChange } from './reduxHelpers'
+import { actions } from './reduxHelpers'
 
+const { onRouteChange } = actions.commonActions
+const { verifyUser } = actions.loginActions
 class App extends Component {
   componentDidMount () {
     if (typeof window !== 'undefined') {
@@ -10,6 +12,9 @@ class App extends Component {
       window.onhashchange = (event) => {
         const route = event.newURL.split('#')[1] || ''
         app.props.onRouteChange(route.replace('/', ''))
+      }
+      if (app.props.token) {
+        app.props.verifyUser(app.props.token)
       }
       const route = window.location.hash.split('#')[1] || ''
       app.props.onRouteChange(route.replace('/', ''))
@@ -31,4 +36,8 @@ class App extends Component {
   }
 }
 
-export default connect(null, { onRouteChange })(App)
+export default connect((state) => {
+  console.log(state)
+  const { auth } = state
+  return { token: auth.token }
+}, { onRouteChange, verifyUser })(App)
