@@ -37,7 +37,6 @@ class App extends Component {
 }
 
 export default connect((state) => {
-  console.log(state)
   const { auth } = state
   return { token: auth.token }
 }, { onRouteChange, verifyUser })(App)
