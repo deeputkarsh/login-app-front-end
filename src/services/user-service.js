@@ -1,13 +1,12 @@
 import Axios from 'axios'
 
-const { LOGIN_API_ENDPOINT } = process.env
-
+const USER_END_POINT = process.env.LOGIN_API_ENDPOINT + '/user'
 export const USER_API = {
-  LOGIN: LOGIN_API_ENDPOINT + '/login',
-  LOGOUT: LOGIN_API_ENDPOINT + '/logout',
-  SIGNUP: LOGIN_API_ENDPOINT + '/signup',
-  GET_USER_DATA: LOGIN_API_ENDPOINT + '/getUserData',
-  UPDATE_PROFILE: LOGIN_API_ENDPOINT + '/updateProfile'
+  LOGIN: USER_END_POINT + '/login',
+  LOGOUT: USER_END_POINT + '/logout',
+  SIGNUP: USER_END_POINT + '/signup',
+  GET_USER_DATA: USER_END_POINT + '/',
+  UPDATE_PROFILE: USER_END_POINT + '/updateProfile'
 }
 
 export const UserService = {

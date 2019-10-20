@@ -20,12 +20,6 @@ const theme = createMuiTheme({
 const reduxState = {}
 const store = configureStore(reduxState)
 interceptor.setupInterceptors(store)
-/* const renderDomOld = (<Provider store={reduxstore.store} >
-  <PersistGate loading={null} persistor={reduxstore.persistor}>
-    <App />
-  </PersistGate>
-</Provider>
-) */
 const renderDom = (
   <Provider store={store}>
     <MuiThemeProvider theme={theme}>
