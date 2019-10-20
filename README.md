@@ -1,3 +1,13 @@
-Simple login App Front end React app
+## login-app-front-end
+custom react boiler plate
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Run application
+
+1. Copy sample env and update required configs in .env
+```
+> cp .env.sample .env
+```
+2. Run application with nodemon in dev enviroment
+```
+> npm start
+```

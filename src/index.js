@@ -1,24 +1,40 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './App'
-import './styles/App.scss'
 
 import { Provider } from 'react-redux'
-import { PersistGate } from 'redux-persist/integration/react'
-import { reduxstore } from './reduxHelpers'
+// import { PersistGate } from 'redux-persist/integration/react'
 import * as serviceWorker from './serviceWorker'
-import 'bootstrap/dist/css/bootstrap.min.css'
 import interceptor from './interceptor'
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 
-interceptor.setupInterceptors(reduxstore.store)
-ReactDOM.render(
-  <Provider store={reduxstore.store} >
-    <PersistGate loading={null} persistor={reduxstore.persistor}>
+import { configureStore } from './redux'
+import './styles/index.scss'
+import App from './routes'
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: '#0b66af' },
+    secondary: { main: '#686868' }
+  }
+})
+const reduxState = {}
+const store = configureStore(reduxState)
+interceptor.setupInterceptors(store)
+/* const renderDomOld = (<Provider store={reduxstore.store} >
+  <PersistGate loading={null} persistor={reduxstore.persistor}>
+    <App />
+  </PersistGate>
+</Provider>
+) */
+const renderDom = (
+  <Provider store={store}>
+    <MuiThemeProvider theme={theme}>
       <App />
-    </PersistGate>
-  </Provider>,
-  document.getElementById('root')
+    </MuiThemeProvider>
+  </Provider>
 )
+
+ReactDOM.render(renderDom, document.getElementById('root'))
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

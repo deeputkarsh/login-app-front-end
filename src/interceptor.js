@@ -1,30 +1,33 @@
-import Axios from 'axios'
-import { actions } from './reduxHelpers'
+import axios from 'axios'
 
-const { showLoader, hideLoader, errorHandler } = actions.commonActions
-const { clearAuth } = actions.loginActions
+// const localStorage = window.localStorage
+
 const setupInterceptors = store => {
-  // Requests interceptor
-  Axios.interceptors.request.use(
-    function (config) {
-      store.dispatch(showLoader())
+  axios.interceptors.request.use(
+    config => {
+      config.headers['content-type'] = 'application/json'
+      // change any global config on request
+      // store.dispatch(showLoader())
       return config
     },
-    function (error) {
-      store.dispatch(hideLoader())
+    error => {
+      // Do something with request error
+      // store.dispatch(hideLoader())
       handleError(store, error)
       return Promise.reject(error)
     }
   )
 
-  // Response interceptor
-  Axios.interceptors.response.use(
-    function (response) {
-      store.dispatch(showLoader())
-      return response
+  axios.interceptors.response.use(
+    config => {
+      if (config.status === 200) {
+        // change something on response success
+        // store.dispatch(showLoader())
+        return config
+      }
     },
-    function (error) {
-      store.dispatch(hideLoader())
+    error => {
+      // store.dispatch(hideLoader())
       handleError(store, error)
       return Promise.reject(error)
     }
@@ -33,7 +36,11 @@ const setupInterceptors = store => {
 const handleError = (store, error) => {
   let err = error.response ? error.response.data : error
   err.timestamp = Date.now()
-  if (
+  if (error && error.response && error.response.status === 406) {
+    /* localStorage.clear()
+    window.location.href = '/' */
+  }
+  /* if (
     (err.statusCode === 500 &&
       err.message === 'INTERNAL SERVER ERROR: jwt expired!!') ||
     err.statusCode === 401
@@ -42,7 +49,7 @@ const handleError = (store, error) => {
     store.dispatch(clearAuth())
   } else {
     store.dispatch(errorHandler(err))
-  }
+  } */
 }
 
 export default {
