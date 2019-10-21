@@ -1,5 +1,5 @@
 const TABS = [
-  { key: 'example', name: 'Example', path: '/example' }
+  { key: 'profile', name: 'Profile', path: '/profile' }
 ]
 
 export default TABS

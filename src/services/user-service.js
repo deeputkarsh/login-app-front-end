@@ -1,7 +1,7 @@
 import Axios from 'axios'
 
 const USER_END_POINT = process.env.LOGIN_API_ENDPOINT + '/user'
-export const USER_API = {
+const USER_API = {
   LOGIN: USER_END_POINT + '/login',
   LOGOUT: USER_END_POINT + '/logout',
   SIGNUP: USER_END_POINT + '/signup',
@@ -15,24 +15,19 @@ export const UserService = {
   },
 
   login (credentials) {
-    return Axios.post(USER_API.LOGIN, credentials)
+    const Authorization = `Basic ${credentials}`
+    return Axios.get(USER_API.LOGIN, { headers: { Authorization } })
   },
 
-  getUserData (token) {
-    return Axios.get(USER_API.SIGNUP, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+  getUserData () {
+    return Axios.get(USER_API.SIGNUP, { headers: { setBearerAuth: true } })
   },
 
-  updateProfile (userData, token) {
-    return Axios.post(USER_API.UPDATE_PROFILE, userData, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+  updateProfile (userData) {
+    return Axios.post(USER_API.UPDATE_PROFILE, userData, { headers: { setBearerAuth: true } })
   },
 
-  logout (token) {
-    return Axios.get(USER_API.LOGOUT, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
+  logout () {
+    return Axios.get(USER_API.LOGOUT, { headers: { setBearerAuth: true } })
   }
 }

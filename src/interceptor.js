@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { Auth } from './utils'
 
 // const localStorage = window.localStorage
 
@@ -6,6 +7,10 @@ const setupInterceptors = store => {
   axios.interceptors.request.use(
     config => {
       config.headers['content-type'] = 'application/json'
+      if (config.headers.setBearerAuth) {
+        config.headers.Authorization = Auth.getToken()
+        delete config.headers.setBearerAuth
+      }
       // change any global config on request
       // store.dispatch(showLoader())
       return config
@@ -21,6 +26,7 @@ const setupInterceptors = store => {
   axios.interceptors.response.use(
     config => {
       if (config.status === 200) {
+        console.log(config)
         // change something on response success
         // store.dispatch(showLoader())
         return config
@@ -34,7 +40,7 @@ const setupInterceptors = store => {
   )
 }
 const handleError = (store, error) => {
-  let err = error.response ? error.response.data : error
+  const err = error.response ? error.response.data : error
   err.timestamp = Date.now()
   if (error && error.response && error.response.status === 406) {
     /* localStorage.clear()

@@ -1,89 +1,43 @@
-let AuthUser
+let authToken
 export const Auth = {
-  register: (apiUser = {}) => {
-    AuthUser = new User(apiUser)
-    LocalStorageHelper.register(AuthUser)
+  register: (token) => {
+    authToken = token
+    LocalStorageHelper.register(authToken)
   },
 
   isLoggedIn: () => {
-    return !!AuthUser || !!LocalStorageHelper.getUser() || false
+    return !!authToken || !!LocalStorageHelper.getToken()
   },
 
   deregister: () => {
     LocalStorageHelper.deregister()
-    AuthUser = undefined
-  },
-
-  getUser: () => {
-    return AuthUser || LocalStorageHelper.getUser()
+    authToken = undefined
   },
 
   getToken: () => {
     let token = ''
-    if (AuthUser) {
-      token = 'Bearer ' + AuthUser.token
-    } else {
-      const localUser = LocalStorageHelper.getUser()
-      if (localUser) {
-        token = 'Bearer ' + localUser.token
-      }
+    authToken = authToken || LocalStorageHelper.getToken()
+    if (authToken) {
+      token = 'Bearer ' + authToken
     }
     return token
-  },
-
-  getUserName: () => {
-    let userName = ''
-    if (AuthUser) {
-      userName = AuthUser.username
-    } else {
-      const localUser = LocalStorageHelper.getUser()
-      if (localUser) {
-        userName = localUser.username
-      }
-    }
-    return userName
-  }
-}
-
-class User {
-  constructor ({ id, name, token, email, mobile }) {
-    this.id = id
-    this.token = token
-    this.username = name
   }
 }
 
 const { btoa, atob, localStorage } = window || {}
 const LocalStorageHelper = {
-  register (userObj) {
-    const encodedObj = EncodeDecode.encode(JSON.stringify(userObj))
+  register (token) {
+    const encodedObj = token ? btoa(token) : ''
     localStorage.setItem('USER', encodedObj)
   },
   deregister () {
     localStorage.clear()
   },
-  getUser () {
-    let user = ''
-    if (localStorage.getItem('USER')) {
-      user = EncodeDecode.decode(localStorage.getItem('USER'))
-      user = JSON.parse(user)
+  getToken () {
+    let user = localStorage.getItem('USER') || ''
+    if (user) {
+      user = user ? atob(user) : ''
     }
     return user
-  }
-}
-
-const EncodeDecode = {
-  encode (data) {
-    let encodedData = ''
-    if (data) {
-      const isObject = data => data && data.constructor && data.constructor === Object
-      encodedData = isObject ? btoa(data) : ''
-    }
-    return encodedData
-  },
-  decode (data) {
-    let decodedData = ''
-    decodedData = data ? atob(data) : ''
-    return decodedData
   }
 }

@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Route, Switch, BrowserRouter } from 'react-router-dom'
+import { Route, Redirect, Switch, BrowserRouter } from 'react-router-dom'
 import { Snackbar } from '@material-ui/core'
 
 import { SnackbarAction } from 'Redux'
-import Header from '../components/Header'
+import { Header } from '../components'
 import Routes from './routes'
 
 import styles from 'Styles/index.scss'
@@ -24,7 +24,10 @@ const App = (props) => {
     <BrowserRouter>
       <Header />
       <div className={styles.mainWrapper}>
-        <Switch>{renderRoutes()}</Switch>
+        <Switch>
+          {renderRoutes()}
+          <Redirect to='/404' />
+        </Switch>
         <Snackbar
           anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
           open={props.snackbarStatus}

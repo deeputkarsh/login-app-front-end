@@ -2,32 +2,29 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { TextField, FormControl, Button } from '@material-ui/core'
 
-import { LoginAction, AppAction, SnackbarAction } from 'Redux'
+import { AppAction, SignupAction, SnackbarAction } from 'Redux'
 
 import styles from 'Styles/index.scss'
 import { getRouteChangeEffect } from 'Utils'
 
-const Login = (props) => {
+const Signup = (props) => {
   useEffect(() => { isLoggedIn && props.history.push('/dashboard') })
   useEffect(getRouteChangeEffect(props.history, props.onRouteChange))
-  const { mobile, password, isLoggedIn } = props
+  const { mobile, name, email, password, isLoggedIn } = props
 
   const onInputChange = ({ target: { value } }, fieldName) => {
     props.onInputChange({ [fieldName]: value })
   }
 
-  const onLoginClick = (event) => {
-    if (mobile.length <= 0 || password.length <= 0) {
+  const onSignupClick = (event) => {
+    if (!mobile || !password) {
       props.showError('Enter valid mobile & password')
     } else {
       // Execute only 'Click' Events or Enter 'keyup' Event
       const { type, keyCode } = event
       if (type !== 'click' && (type === 'keyup' && keyCode !== 13)) { return }
-      props.login({ mobile, password })
+      props.signup({ mobile, name, email, password })
     }
-  }
-  const onPasswordEnter = (event) => {
-    if (event.keyCode === 13) { props.login({ mobile, password }) }
   }
 
   return (
@@ -49,6 +46,32 @@ const Login = (props) => {
           </FormControl>
           <FormControl style={{ width: '100%' }}>
             <TextField
+              name='email'
+              label='email'
+              variant='outlined'
+              type='email'
+              placeholder='Email'
+              className={styles.loginInput}
+              required
+              value={email}
+              onChange={e => onInputChange(e, 'email')}
+            />
+          </FormControl>
+          <FormControl style={{ width: '100%' }}>
+            <TextField
+              name='name'
+              label='Name'
+              variant='outlined'
+              type='text'
+              placeholder='Name'
+              className={styles.loginInput}
+              required
+              value={name}
+              onChange={e => onInputChange(e, 'name')}
+            />
+          </FormControl>
+          <FormControl style={{ width: '100%' }}>
+            <TextField
               name='password'
               label='Password'
               variant='outlined'
@@ -58,23 +81,22 @@ const Login = (props) => {
               required
               value={password}
               onChange={e => onInputChange(e, 'password')}
-              onKeyUp={onPasswordEnter}
             />
           </FormControl>
         </form>
-        <Button color='primary' size='large' variant='contained' className={styles.loginArrow} onKeyUp={onLoginClick} onClick={onLoginClick}> Login </Button>
+        <Button color='primary' size='large' variant='contained' className={styles.loginArrow} onKeyUp={onSignupClick} onClick={onSignupClick}> Register </Button>
       </div>
     </div>
   )
 }
 
-const mapStateToProps = ({ loginStore, appStore: { isLoggedIn } }) => ({ ...loginStore, isLoggedIn })
+const mapStateToProps = ({ signupStore, appStore: { isLoggedIn } }) => ({ ...signupStore, isLoggedIn })
 
-const { onInputChange, login } = LoginAction
+const { onInputChange, signup } = SignupAction
 const mapdispatchtoprops = {
-  login,
+  signup,
   onInputChange,
   showError: SnackbarAction.show,
   onRouteChange: AppAction.onRouteChange
 }
-export default connect(mapStateToProps, mapdispatchtoprops)(Login)
+export default connect(mapStateToProps, mapdispatchtoprops)(Signup)

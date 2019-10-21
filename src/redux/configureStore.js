@@ -3,11 +3,15 @@ import { createLogger } from 'redux-logger'
 import thunk from 'redux-thunk'
 import promiseMiddleware from 'redux-promise'
 
-import userStore from './userActions'
+import appStore from './appActions'
 import snackbarStore from './snackbarActions'
+import signupStore from './signupActions'
+import loginStore from './loginActions'
 
 const rootReducer = combineReducers({
-  userStore,
+  appStore,
+  loginStore,
+  signupStore,
   snackbarStore
 })
 
