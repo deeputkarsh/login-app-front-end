@@ -7,11 +7,13 @@ import appStore from './appActions'
 import snackbarStore from './snackbarActions'
 import signupStore from './signupActions'
 import loginStore from './loginActions'
+import profileStore from './profileActions'
 
 const rootReducer = combineReducers({
   appStore,
   loginStore,
   signupStore,
+  profileStore,
   snackbarStore
 })
 

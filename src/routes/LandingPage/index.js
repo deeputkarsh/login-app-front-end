@@ -10,12 +10,8 @@ import { AppAction } from 'Redux'
 
 const LandingPage = (props) => {
   const { isLoggedIn } = props
-  useEffect(() => { isLoggedIn || props.history.push('/') }, [isLoggedIn])
+  useEffect(() => { isLoggedIn || props.history.push('/') })
   useEffect(getRouteChangeEffect(props.history, props.onRouteChange))
-
-  if (!isLoggedIn) {
-    return null
-  }
 
   return (
     <Grid container justify='center' className={styles.landingPageWrapper} spacing={3}>

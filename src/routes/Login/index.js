@@ -18,17 +18,11 @@ const Login = (props) => {
 
   const onLoginClick = (event) => {
     if (mobile.length <= 0 || password.length <= 0) {
-      props.showError('Enter valid mobile & password')
-    } else {
-      // Execute only 'Click' Events or Enter 'keyup' Event
-      const { type, keyCode } = event
-      if (type !== 'click' && (type === 'keyup' && keyCode !== 13)) { return }
-      props.login({ mobile, password })
+      return props.showError('Enter valid mobile & password')
     }
+    props.login({ mobile, password })
   }
-  const onPasswordEnter = (event) => {
-    if (event.keyCode === 13) { props.login({ mobile, password }) }
-  }
+  const onPasswordEnter = event => (event.keyCode === 13) && props.login({ mobile, password })
 
   return (
     <div className={styles.loginInnerWrapper}>
@@ -62,7 +56,7 @@ const Login = (props) => {
             />
           </FormControl>
         </form>
-        <Button color='primary' size='large' variant='contained' className={styles.loginArrow} onKeyUp={onLoginClick} onClick={onLoginClick}> Login </Button>
+        <Button color='primary' size='large' variant='contained' className={styles.loginArrow} onClick={onLoginClick}> Login </Button>
       </div>
     </div>
   )
